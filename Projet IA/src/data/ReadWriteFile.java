@@ -45,7 +45,6 @@ public class ReadWriteFile {
                     
                 }
                 inputs.add(input);
-                System.out.println(inputs.get(0));
             }
             reader.close();
         } catch (IOException e) {

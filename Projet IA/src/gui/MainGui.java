@@ -82,7 +82,7 @@ public class MainGui extends JFrame {
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        trainNetworkButton = new JButton("Train X times:");
+        trainNetworkButton = new JButton("Nb phases de training:");
         trainingSetsAmount = new JFormattedTextField("5000");
         trainingSetsAmount.setMaximumSize(new Dimension(100, 30));
         trainingSetsAmount.setPreferredSize(new Dimension(100, 30));
@@ -90,13 +90,9 @@ public class MainGui extends JFrame {
         centerPanel.add(trainingSetsAmount, gbc);
 
         centerPanel.add(Box.createVerticalStrut(50));
-
-        helpButton = new JButton("HELP");
-        centerPanel.add(helpButton, gbc);
-
         centerPanel.add(Box.createVerticalStrut(50));
 
-        transformButton = new JButton(">>");
+        transformButton = new JButton("-->");
         centerPanel.add(transformButton, gbc);
 
         centerPanel.add(Box.createVerticalStrut(50));

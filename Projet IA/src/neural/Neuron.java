@@ -41,7 +41,7 @@ public class Neuron {
         for (int i = 0; i < inputs.size(); i++) {
             sum += inputs.get(i) * weights.get(i);
         }
-        sum += BIAS * biasWeight;
+//        sum += BIAS * biasWeight;
 
         output = MathUtils.sigmoidValue(sum);
     }
@@ -54,7 +54,7 @@ public class Neuron {
             weights.set(i, d);
         }
 
-        biasWeight += LEARNING_RATIO * delta * BIAS;
+//        biasWeight += LEARNING_RATIO * delta * BIAS;
     }
 
     public double getOutput() {

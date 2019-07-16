@@ -33,6 +33,8 @@ public class Network {
             double delta = goodOutput.get(i) - neurons.get(i).getOutput();
             neurons.get(i).adjustWeights(delta);
         }
+        System.out.println("Expected : " + goodOutput);
+        System.out.println("Output   : " + getOutputs());
     }
 
 }
