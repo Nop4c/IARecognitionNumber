@@ -1,4 +1,4 @@
-package gui.components.data;
+package ui.components.data;
 
 public class Section {
 

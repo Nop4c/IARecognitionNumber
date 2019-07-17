@@ -1,23 +1,18 @@
 package neural;
 
-import utils.MathUtils;
-
 import java.util.ArrayList;
 
 public class Neuron {
 
-    private static final int BIAS = 1;
     private static final double LEARNING_RATIO = 0.1;
 
     private ArrayList<Integer> inputs;
     private ArrayList<Double> weights;
-    private double biasWeight;
     private double output;
 
     public Neuron() {
         this.inputs = new ArrayList<>();
         this.weights = new ArrayList<>();
-        this.biasWeight = Math.random();
     }
 
     public void setInputs(ArrayList<Integer> inputs) {
@@ -42,8 +37,8 @@ public class Neuron {
             sum += inputs.get(i) * weights.get(i);
         }
 //        sum += BIAS * biasWeight;
-
-        output = MathUtils.sigmoidValue(sum);
+// sigmoid
+        output = (1 / (1 + Math.exp(-sum)));
     }
 // retropropagation calcul correction des poids
     public void adjustWeights(double delta) {

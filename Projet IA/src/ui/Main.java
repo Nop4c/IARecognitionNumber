@@ -1,57 +1,64 @@
-package gui;
+package ui;
 
-import data.GoodOutputs;
-import data.ReadWriteFile;
-import gui.components.CustomPanel;
-import gui.components.DrawingPanel;
-import neural.Train;
-import neural.TrainingSet;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainGui extends JFrame {
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
-    private final int RESOLUTION = 20;
+import data.GoodOutputs;
+import data.ReadWriteFile;
+import neural.Train;
+import neural.TrainingSet;
+import ui.components.DrawingPanel;
+
+public class Main extends JFrame {
+
 
     private Train networkTrainer;
 
     private JPanel mainPanel;
     private DrawingPanel drawingPanel;
-    private CustomPanel resultPanel;
     private JLabel labelResultat;
     private JButton clearButton;
     private JButton trainButton;
     private JButton transformButton;
-    private JButton helpButton;
     private JButton trainNetworkButton;
     private JTextField trainingSetsAmount;
     private JComboBox<String> trainAsCombo;
-    private JTextArea outputTextArea;
     private int resultat;
     
     public static void main(String[] args) {
-        new MainGui();
+        new Main();
     }
 
-    public MainGui() {
-    super("IA ");
+    public Main() {
 
         networkTrainer = new Train();
-
         setMainPanel();
-        setLeftSide();
-        setCenterArea();
-        setOutputPanel();
+        setLeft();
         setRightSide(resultat);
         setOnClicks();
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
-        setSize(new Dimension(1260, 500));
+        setSize(new Dimension(1000, 500));
         setLocationRelativeTo(null);
         setResizable(false);
     }
@@ -62,58 +69,28 @@ public class MainGui extends JFrame {
         setContentPane(mainPanel);
     }
 
-    private void setLeftSide() {
+    private void setLeft() {
         JPanel panel = new JPanel();
         panel.setBackground(Color.LIGHT_GRAY);
-        panel.setPreferredSize(new Dimension(410, 440));
-
-        drawingPanel = new DrawingPanel(400, 400, RESOLUTION);
-
+        panel.setPreferredSize(new Dimension(550, 440));
+        drawingPanel = new DrawingPanel(400, 400, 20);
         panel.add(drawingPanel);
-
-        mainPanel.add(panel);
-    }
-
-    private void setCenterArea() {
-        JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new GridBagLayout());
-        centerPanel.setPreferredSize(new Dimension(200, 400));
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.anchor = GridBagConstraints.CENTER;
-
         trainNetworkButton = new JButton("Nb phases de training:");
         trainingSetsAmount = new JFormattedTextField("5000");
         trainingSetsAmount.setMaximumSize(new Dimension(100, 30));
         trainingSetsAmount.setPreferredSize(new Dimension(100, 30));
-        centerPanel.add(trainNetworkButton, gbc);
-        centerPanel.add(trainingSetsAmount, gbc);
-
-        centerPanel.add(Box.createVerticalStrut(50));
-        centerPanel.add(Box.createVerticalStrut(50));
-
-        transformButton = new JButton("-->");
-        centerPanel.add(transformButton, gbc);
-
-        centerPanel.add(Box.createVerticalStrut(50));
-
-        clearButton = new JButton("Clear");
-        clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        centerPanel.add(clearButton, gbc);
-
-        centerPanel.add(Box.createVerticalStrut(50));
-
-        centerPanel.add(new JLabel("Train as:", SwingConstants.CENTER), gbc);
-
+        panel.add(trainNetworkButton);
+        panel.add(trainingSetsAmount);
+        mainPanel.add(panel);
         trainAsCombo = new JComboBox<>(new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"});
-        trainAsCombo.setAlignmentX(Component.CENTER_ALIGNMENT);
         trainAsCombo.setMaximumSize(new Dimension((int) trainAsCombo.getPreferredSize().getWidth(), 30));
-        centerPanel.add(trainAsCombo, gbc);
-
-        trainButton = new JButton("Train");
-        centerPanel.add(trainButton, gbc);
-
-        mainPanel.add(centerPanel);
+        panel.add(trainAsCombo);
+        trainButton = new JButton("Save");
+        panel.add(trainButton);
+        clearButton = new JButton("Reset");
+        panel.add(clearButton);
+        transformButton = new JButton(">>>>");
+        panel.add(transformButton);
     }
 
     private void setRightSide(int res) {
@@ -128,21 +105,11 @@ public class MainGui extends JFrame {
         mainPanel.add(panel);
     }
 
-    private void setOutputPanel() {
-        JPanel outputPanel = new JPanel();
-        outputPanel.setPreferredSize(new Dimension(200, 430));
-
-        outputTextArea = new JTextArea();
-        outputTextArea.setPreferredSize(new Dimension(200, 430));
-        outputPanel.add(outputTextArea);
-
-        mainPanel.add(outputPanel);
-    }
-
     private void setOnClicks() {
         clearButton.addActionListener(e -> drawingPanel.clear());
 
         trainButton.addActionListener(e -> {
+        	System.out.println("save");
             String letter = (String) trainAsCombo.getSelectedItem();
             networkTrainer.addTrainingSet(new TrainingSet(drawingPanel.getPixels(), GoodOutputs.getInstance().getGoodOutput(letter)));
             ReadWriteFile.saveToFile(drawingPanel.getPixels(), letter);
@@ -182,27 +149,24 @@ public class MainGui extends JFrame {
             int letterValue = i;
             sb.append(letterValue);
             double value = outputs.get(i);
-            if (value < 0.01)
-                value = 0;
-            if (value > 0.99)
-                value = 1;
-
             value *= 1000;
             int x = (int) (value);
             value = x / 1000.0;
             
-            sb.append("\t " + value);
-            sb.append("\n");           
-            hash.put(i, value);
-            
+            sb.append(" ---- " + value);
+                  
+            hash.put(i, value);        
         }
+        System.out.println("Numéro   : / ---- 0   ----   1   ----   2   ----   3   ----   4   ----   5   ----   6   ----   7   ----   8   ----   9" );
+        System.out.println("Résultat : " + sb);
         Map.Entry<Integer,Double> maxEntry = null;
         for (Map.Entry<Integer,Double> entry : hash.entrySet())
             if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0)          
                 maxEntry = entry;
+        // Resultat
         resultat = maxEntry.getKey();
-        outputTextArea.setText(sb.toString());
         labelResultat.setText(String.valueOf(resultat));
+
     }
 
 }
