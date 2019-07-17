@@ -65,13 +65,13 @@ public class Main extends JFrame {
 
     private void setMainPanel() {
         mainPanel = new JPanel();
-        mainPanel.setBackground(Color.LIGHT_GRAY);
+        mainPanel.setBackground(Color.GRAY);
         setContentPane(mainPanel);
     }
 
     private void setLeft() {
         JPanel panel = new JPanel();
-        panel.setBackground(Color.LIGHT_GRAY);
+        panel.setBackground(Color.GRAY);
         panel.setPreferredSize(new Dimension(550, 440));
         drawingPanel = new DrawingPanel(400, 400, 20);
         panel.add(drawingPanel);
@@ -110,9 +110,9 @@ public class Main extends JFrame {
 
         trainButton.addActionListener(e -> {
         	System.out.println("save");
-            String letter = (String) trainAsCombo.getSelectedItem();
-            networkTrainer.addTrainingSet(new TrainingSet(drawingPanel.getPixels(), GoodOutputs.getInstance().getGoodOutput(letter)));
-            ReadWriteFile.saveToFile(drawingPanel.getPixels(), letter);
+            String num = (String) trainAsCombo.getSelectedItem();
+            networkTrainer.addTrainingSet(new TrainingSet(drawingPanel.getPixels(), GoodOutputs.getInstance().getGoodOutput(num)));
+            ReadWriteFile.saveToFile(drawingPanel.getPixels(), num);
         });
 
         transformButton.addActionListener(e -> {
@@ -146,8 +146,8 @@ public class Main extends JFrame {
         StringBuilder sb = new StringBuilder();
         ArrayList<Double> outputs = networkTrainer.getOutputs();
         for (int i = 0; i < outputs.size(); i++) {
-            int letterValue = i;
-            sb.append(letterValue);
+            int numValue = i;
+            sb.append(numValue);
             double value = outputs.get(i);
             value *= 1000;
             int x = (int) (value);

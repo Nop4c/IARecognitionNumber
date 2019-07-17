@@ -26,7 +26,6 @@ public class ReadWriteFile {
 
     private static ArrayList<ArrayList<Integer>> readFromFile(String filename) {
         ArrayList<ArrayList<Integer>> inputs = new ArrayList<>();
-
         try {
             System.out.println(filename);
             InputStream in = ReadWriteFile.class.getClass().getResourceAsStream(filename);
@@ -54,6 +53,7 @@ public class ReadWriteFile {
         return inputs;
     }
 
+    //save
     public static void saveToFile(ArrayList<Integer> input, String filename) {
         try {
             File file = new File("resources/" + filename + ".txt");

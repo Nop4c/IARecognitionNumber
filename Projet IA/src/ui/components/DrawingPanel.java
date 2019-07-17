@@ -52,7 +52,6 @@ public class DrawingPanel extends CustomPanel implements MouseMotionListener, Mo
             for (Section s : sections) {
                 if (e.getX() > s.getX() && e.getX() < s.getX() + s.getWidth() && e.getY() > s.getY() && e.getY() < s.getY() + s.getHeight()) {
                     s.setActive(true);
-
                 }
             }
         } else if (SwingUtilities.isRightMouseButton(e)) {

@@ -25,31 +25,27 @@ public class CustomPanel extends JPanel {
 
         generateSections();
     }
-
+    
+ // génére ma size 
     private void generateSections() {
         sections = new ArrayList<>();
-
         for (int i = 0; i < count; i++) {
             for (int j = 0; j < count; j++) {
                 sections.add(new Section(i * (width / count), j * (height / count), width / count, height / count));
             }
         }
-
         repaint();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         generateSections(g);
         drawSections(g);
-
     }
 
     private void generateSections(Graphics g) {
         g.setColor(Color.LIGHT_GRAY);
-
         for (Section s : sections) {
             g.drawLine(0, s.getY(), width, s.getY());
             g.drawLine(s.getX(), 0, s.getX(), height);
@@ -78,14 +74,12 @@ public class CustomPanel extends JPanel {
     }
 
     public void clear() {
-        for (Section s : sections) {
+        for (Section s : sections)
             s.setActive(false);
-        }
-
         repaint();
     }
 
-    public void drawLetter(ArrayList<Integer> pixels) {
+    public void drawNum(ArrayList<Integer> pixels) {
         for (int i = 0; i < pixels.size(); i++) {
             if (pixels.get(i) == 1)
                 sections.get(i).setActive(true);
